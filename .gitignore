@@ -1,12 +1,12 @@
-# Byte-compiled / optimized / DLL files
+# Archivos compilados / optimizados / DLL
 __pycache__/
 *.py[codz]
 *$py.class
 
-# C extensions
+# Extensiones C
 *.so
 
-# Distribution / packaging
+# Distribución / empaquetado
 .Python
 build/
 develop-eggs/
@@ -27,16 +27,16 @@ share/python-wheels/
 MANIFEST
 
 # PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+#  Usualmente estos archivos los escribe un script de Python desde una plantilla
+#  antes de que PyInstaller construya el exe, para inyectar fecha/otra info en él.
 *.manifest
 *.spec
 
-# Installer logs
+# Registros del instalador
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit test / coverage reports
+# Reportes de tests unitarios / cobertura
 htmlcov/
 .tox/
 .nox/
@@ -51,24 +51,24 @@ coverage.xml
 .pytest_cache/
 cover/
 
-# Translations
+# Traducciones
 *.mo
 *.pot
 
-# Django stuff:
+# Cosas de Django:
 *.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
-# Flask stuff:
+# Cosas de Flask:
 instance/
 .webassets-cache
 
-# Scrapy stuff:
+# Cosas de Scrapy:
 .scrapy
 
-# Sphinx documentation
+# Documentación Sphinx
 docs/_build/
 
 # PyBuilder
@@ -83,34 +83,33 @@ profile_default/
 ipython_config.py
 
 # pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
+#   Para una librería o paquete, quizá quieras ignorar estos archivos ya que el código
+#   está pensado para correr en múltiples entornos; de lo contrario, inclúyelos en control:
 # .python-version
 
 # pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
+#   Según pypa/pipenv#598, se recomienda incluir Pipfile.lock en control de versiones.
+#   Sin embargo, en colaboración, si hay dependencias específicas por plataforma o sin soporte
+#   multiplataforma, pipenv puede instalar dependencias que no funcionen, o no instalar todas.
 #Pipfile.lock
 
 # UV
-#   Similar to Pipfile.lock, it is generally recommended to include uv.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
+#   Similar a Pipfile.lock, generalmente se recomienda incluir uv.lock en control de versiones.
+#   Especialmente recomendado para paquetes binarios para garantizar reproducibilidad; más
+#   comúnmente ignorado en librerías.
 #uv.lock
 
 # poetry
-#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
+#   Similar a Pipfile.lock, generalmente se recomienda incluir poetry.lock en control de versiones.
+#   Especialmente recomendado para paquetes binarios para garantizar reproducibilidad; más
+#   comúnmente ignorado en librerías.
 #   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
 #poetry.lock
 #poetry.toml
 
 # pdm
-#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
-#   pdm recommends including project-wide configuration in pdm.toml, but excluding .pdm-python.
+#   Similar a Pipfile.lock, generalmente se recomienda incluir pdm.lock en control de versiones.
+#   pdm recomienda incluir la configuración del proyecto en pdm.toml, pero excluir .pdm-python.
 #   https://pdm-project.org/en/latest/usage/project/#working-with-version-control
 #pdm.lock
 #pdm.toml
@@ -118,23 +117,23 @@ ipython_config.py
 .pdm-build/
 
 # pixi
-#   Similar to Pipfile.lock, it is generally recommended to include pixi.lock in version control.
+#   Similar a Pipfile.lock, generalmente se recomienda incluir pixi.lock en control de versiones.
 #pixi.lock
-#   Pixi creates a virtual environment in the .pixi directory, just like venv module creates one
-#   in the .venv directory. It is recommended not to include this directory in version control.
+#   Pixi crea un entorno virtual en el directorio .pixi, igual que el módulo venv lo crea
+#   en el directorio .venv. Se recomienda no incluir este directorio en control de versiones.
 .pixi
 
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
+# PEP 582; usado por ej. github.com/David-OConnor/pyflow y github.com/pdm-project/pdm
 __pypackages__/
 
-# Celery stuff
+# Cosas de Celery
 celerybeat-schedule
 celerybeat.pid
 
-# SageMath parsed files
+# Archivos parseados de SageMath
 *.sage.py
 
-# Environments
+# Entornos
 .env
 .envrc
 .venv
@@ -144,14 +143,11 @@ ENV/
 env.bak/
 venv.bak/
 
-# Spyder project settings
+# Configuraciones de proyecto de Spyder
 .spyderproject
 .spyproject
 
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
+# Documentación mkdocs
 /site
 
 # mypy
@@ -159,45 +155,45 @@ venv.bak/
 .dmypy.json
 dmypy.json
 
-# Pyre type checker
+# Checker de tipos Pyre
 .pyre/
 
-# pytype static type analyzer
+# Analizador estático pytype
 .pytype/
 
-# Cython debug symbols
+# Símbolos de depuración de Cython
 cython_debug/
 
 # PyCharm
-#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
-#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
-#  and can be added to the global gitignore or merged into this file.  For a more nuclear
-#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
+#  La plantilla específica de JetBrains se mantiene en un JetBrains.gitignore separado que
+#  se encuentra en https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+#  y puede añadirse al gitignore global o fusionarse en este archivo. Para una opción más drástica
+#  (no recomendada) puedes descomentar lo siguiente para ignorar toda la carpeta .idea.
 #.idea/
 
 # Abstra
-# Abstra is an AI-powered process automation framework.
-# Ignore directories containing user credentials, local state, and settings.
-# Learn more at https://abstra.io/docs
+# Abstra es un framework de automatización de procesos con IA.
+# Ignorar directorios con credenciales de usuario, estado local y configuraciones.
+# Más info en https://abstra.io/docs
 .abstra/
 
 # Visual Studio Code
-#  Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore 
-#  that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
-#  and can be added to the global gitignore or merged into this file. However, if you prefer, 
-#  you could uncomment the following to ignore the entire vscode folder
+#  La plantilla específica de VS Code se mantiene en un VisualStudioCode.gitignore separado
+#  que está en https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
+#  y puede añadirse al gitignore global o fusionarse en este archivo. Sin embargo, si preferís,
+#  podés descomentar lo siguiente para ignorar toda la carpeta .vscode
 # .vscode/
 
-# Ruff stuff:
+# Cosas de Ruff:
 .ruff_cache/
 
-# PyPI configuration file
+# Archivo de configuración de PyPI
 .pypirc
 
 # Cursor
-#  Cursor is an AI-powered code editor. `.cursorignore` specifies files/directories to
-#  exclude from AI features like autocomplete and code analysis. Recommended for sensitive data
-#  refer to https://docs.cursor.com/context/ignore-files
+#  Cursor es un editor de código con IA. `.cursorignore` especifica archivos/directorios a
+#  excluir de funciones de IA como autocompletado y análisis. Recomendado para datos sensibles
+#  ver https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
 
@@ -205,3 +201,22 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Entorno virtual (forma clara como carpeta)
+.venv/
+
+# VS Code (ignorar configuraciones locales del editor)
+.vscode/
+
+# Datos locales (archivos de trabajo)
+data/*.json
+# Si querés mantener un ejemplo en el repo, descomenta la siguiente línea:
+# !data/ejemplo.json
+
+# Archivos de sistema (Windows / macOS)
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Logs genéricos
+*.log

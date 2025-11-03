@@ -1,6 +1,8 @@
 # lista-compras-informatorio
 Lista de Compra Avanzada con Tkinter para Informatorio
 
+
+
 División del trabajo para 3 personas
 Un único punto de entrada: src/main.py.
 Se trabaja por Issues → ramas feature → PR → merge a main.
