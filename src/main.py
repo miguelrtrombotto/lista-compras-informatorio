@@ -1,3 +1,4 @@
+#  feature/estructura-inicial
 import tkinter as tk  # Importa el módulo base de Tkinter y lo alias como tk
 from tkinter import ttk, messagebox  # Importa widgets tematizados (ttk) y diálogos (messagebox)
 
@@ -196,3 +197,6 @@ def main():
 if __name__ == "__main__":
     # Si este archivo se ejecuta directamente (no importado como módulo), lanza main()
     main()
+# =======
+# "Prueba de git"
+#  main
