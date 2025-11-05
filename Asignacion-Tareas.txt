@@ -60,8 +60,8 @@ Persona C — Persistencia, empaquetado y documentación
 Responsable de guardar/abrir y material de entrega.
 
 Issue 4: Guardar/Abrir JSON + atajos Ctrl+S / Ctrl+O
-Rama: feature/json-atajos
-Tareas: filedialog askopen/asksave, Path, json dumps/loads, normalizar estructura [{"text", "done"}], variable self.current_file, mensajes de error, actualización de status temporal al guardar.
+    Rama: feature/json-atajos
+    Tareas: filedialog askopen/asksave, Path, json dumps/loads, normalizar estructura [{"text", "done"}], variable self.current_file, mensajes de error, actualización de status temporal al guardar.
 Issue 8: README
 Rama: docs/readme
 Tareas: requisitos, cómo ejecutar, atajos, flujo de contribución (ramas/PRs), estructura del repo.
