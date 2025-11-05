@@ -2,8 +2,6 @@
 
 A continuación una división clara por responsabilidades, flujo de ramas/PRs, definición de “hecho” y un plan de integración para que 3 personas trabajen en paralelo sin pisarse.
 
----
-
 ## Estructura del repositorio
 
 - src/
