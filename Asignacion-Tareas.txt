@@ -187,5 +187,3 @@ Responsable de guardar/abrir y material de entrega.
 2. Persona A comienza con Issue 1 y 2. Personas B y C pueden preparar sus ramas pero esperarán a que A integre Issue 2 para basarse en main actualizado.
 3. Definir en el README el flujo de contribución resumido y los atajos de teclado.
 4. Avanzar con PRs cortos y frecuentes para minimizar conflictos.
-
-Si quieres, te preparo los textos exactos para crear cada Issue (título + descripción + criterios de aceptación) y los mensajes de commit sugeridos para mantener consistencia. ¿Te los paso ahora?
