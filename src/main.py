@@ -2,7 +2,6 @@
 import tkinter as tk  # Importa el módulo base de Tkinter y lo alias como tk
 from tkinter import ttk, messagebox  # Importa widgets tematizados (ttk) y diálogos (messagebox)
 
-
 class App:
     def __init__(self, root: tk.Tk):
         # Ventana raíz de la aplicación (objeto principal de Tkinter)
