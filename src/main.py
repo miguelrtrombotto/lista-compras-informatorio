@@ -1,7 +1,6 @@
 #  feature/estructura-inicial
 import tkinter as tk  # Importa el módulo base de Tkinter y lo alias como tk
 from tkinter import ttk, messagebox  # Importa widgets tematizados (ttk) y diálogos (messagebox)
-
 class App:
     def __init__(self, root: tk.Tk):
         # Ventana raíz de la aplicación (objeto principal de Tkinter)
@@ -182,7 +181,6 @@ class App:
         # Actualiza el StringVar para que la etiqueta inferior muestre el resumen
         self.status.set(f"{total} ítems · {done} hechos")
 
-
 def main():
     # Punto de entrada de la aplicación:
     # 1) Crea la ventana principal de Tkinter
@@ -191,7 +189,6 @@ def main():
     App(root)
     # 3) Inicia el bucle principal de eventos (la app queda a la espera de interacción)
     root.mainloop()
-
 
 if __name__ == "__main__":
     # Si este archivo se ejecuta directamente (no importado como módulo), lanza main()
