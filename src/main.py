@@ -2,10 +2,15 @@
 #  feature/estructura-inicial
 import tkinter as tk  # Importa el módulo base de Tkinter y lo alias como tk
 from tkinter import ttk, messagebox  # Importa widgets tematizados (ttk) y diálogos (messagebox)
+import subprocess
+import sys
+import importlib.util
 
 
 class App:
+    
     def __init__(self, root: tk.Tk):
+        
         # Ventana raíz de la aplicación (objeto principal de Tkinter)
         self.root = root
         # Establece el título que verás en la barra superior de la ventana
@@ -73,7 +78,7 @@ class App:
         # ---------------------
         table_frame = ttk.Frame(main)  # Contenedor para la tabla y la barra de scroll
         table_frame.pack(fill="both", expand=True, pady=8)
-
+        
         # Crea el Treeview como una tabla con dos columnas lógicas: "item" y "hecho"
         self.tree = ttk.Treeview(
             table_frame,
@@ -102,11 +107,21 @@ class App:
         self.status = tk.StringVar(value="0 ítems · 0 hechos")
         # Etiqueta inferior que muestra el estado, alineada a la izquierda
         ttk.Label(self.root, textvariable=self.status, anchor="w").pack(fill="x", padx=12, pady=(0, 8))
+        
+        # ---------------------
+        # Sección: Barra de progreso (porcentaje completado)
+        # ---------------------
+        self.progress = ttk.Progressbar(self.root, orient="horizontal", mode="determinate")
+        self.progress.pack(fill="x", padx=12, pady=(0, 4))
+
 
     def _bind_shortcuts(self):
         # Atajo de teclado a nivel de ventana:
         # - Tecla Supr (Delete) ejecuta delete_selected para borrar filas seleccionadas
         self.root.bind("<Delete>", lambda e: self.delete_selected())
+        
+        self.tree.bind("<Double-1>", self.toggle_done)
+
 
     def add_item(self):
         # Obtiene el texto del Entry desde la variable y elimina espacios al inicio/fin
@@ -123,7 +138,23 @@ class App:
         # Limpia el Entry para permitir ingresar un nuevo valor fácilmente
         self.var_item.set("")
 
-        # Redibuja la tabla para reflejar el nuevo ítem y actualiza el contador
+        self.render()        # Redibuja la tabla para reflejar el nuevo ítem y actualiza el contador
+
+        self.update_status()
+    
+    def toggle_done(self, event):
+        # Identifica la fila donde ocurrió el doble clic
+        item_id = self.tree.identify_row(event.y)
+        if not item_id:
+            return
+
+        # Obtiene el índice del ítem en la lista
+        index = self.tree.index(item_id)
+
+        #Cambia el estado 'done' del ítem
+        self.items[index]["done"] = not self.items[index]["done"]
+
+        # Actualiza la tabla y el contador
         self.render()
         self.update_status()
 
@@ -181,16 +212,63 @@ class App:
         total = len(self.items)
         # Cuenta cuántos ítems están marcados como hechos
         done = sum(1 for i in self.items if i["done"])
+        # Imprime el porecentaje de items marcados como hechos
+        percent = (done / total * 100) if total else 0 
         # Actualiza el StringVar para que la etiqueta inferior muestre el resumen
-        self.status.set(f"{total} ítems · {done} hechos")
-
+        self.status.set(f"{total} ítems · {done} hechos · {percent:.0f}% completado")
+        
+        self.progress["value"] = percent
+        
 
 def main():
+    
+    def instalar_si_falta(paquete):
+        
+        if importlib.util.find_spec(paquete) is None:
+            elec = input("Desea instalar TTkThemes? S/N: ").strip().lower()
+            if elec == "s":
+                print(f"Instalando {paquete}... Esto puede tardar unos minutos")
+                subprocess.check_call([sys.executable, "-m", "pip", "install", paquete])
+                return True
+        else:
+            print(f"{paquete} ya está instalado.")
+            return False
+            
+    usar_ttkthemes = instalar_si_falta("ttkthemes")
+    
+    import os
     # Punto de entrada de la aplicación:
     # 1) Crea la ventana principal de Tkinter
-    root = tk.Tk()
+    if usar_ttkthemes:
+        try:
+            from ttkthemes import ThemedTk
+            root = ThemedTk()
+            theme = True
+        except Exception:
+            # Si ThemedTk no está disponible, cae al Tk normal
+            root = tk.Tk()
+            theme = False            
+    else:
+        
+        root = tk.Tk()
+        theme = False
+        
+    # Construir la ruta absoluta al archivo de tema (relativa a este archivo)
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # sube un nivel desde src/
+    theme_tcl = os.path.join(base_dir, "breeze-dark", "breeze-dark.tcl")    
+    
+    try:
+        root.tk.call("source", theme_tcl)
+        # Si ThemedTk soporta set_theme, usarlo (tu código original lo hacía)
+        if hasattr(root, "set_theme"):
+            root.set_theme("breeze-dark")
+    except Exception as err:
+        # fallback: no tema; mostrar advertencia en consola
+        print(f"Advertencia: no se pudo cargar el tema: {err}")
+        
     # 2) Construye la UI y lógica de la app sobre esa ventana
     App(root)
+    
     # 3) Inicia el bucle principal de eventos (la app queda a la espera de interacción)
     root.mainloop()
 
@@ -198,8 +276,3 @@ def main():
 if __name__ == "__main__":
     # Si este archivo se ejecuta directamente (no importado como módulo), lanza main()
     main()
-# =======
-# "Prueba de git"
-#  main
-# =======
-# >>>>>>> main

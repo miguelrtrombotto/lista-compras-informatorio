@@ -1,23 +1,40 @@
-# lista-compras-informatorio
-Lista de Compra Avanzada con Tkinter para Informatorio
+## General information
 
+These are Tk version of KDE Breeze and Breeze Dark themes.
 
+* Breeze version was created by MaxPerl:
 
-División del trabajo para 3 personas
-Un único punto de entrada: src/main.py.
-Se trabaja por Issues → ramas feature → PR → merge a main.
+  https://github.com/MaxPerl/ttk-Breeze
 
-Persona A — UI base y operaciones de ítems
-Issue 1: Ventana base (Tk root, tamaño, frame principal, rótulo inicial)
-Issue 2: Agregar ítems (Entry + botón + Enter) + Treeview (“Ítem”, “Hecho”)
-Issue 3: Eliminar seleccionados y Limpiar lista (botones + tecla Delete)
-Persona B — Interacciones y estado avanzado
-Issue 5: Marcar como hecho con doble clic (toggle_done)
-Issue 6: Barra de estado robusta (“N ítems · M hechos”)
-Issue 7: Validaciones y atajos extra (duplicados, feedback consistente)
-Persona C — Persistencia, documentación y release
-Issue 4: Guardar/Abrir JSON + atajos Ctrl+S / Ctrl+O
-Issue 8: README (requisitos, cómo ejecutar, atajos, contribución)
-Issue 9: Release v0.1.0 (tag y notas)
-Orden recomendado de integración: A → B → C.
-Si B o C necesitan empezar antes, pueden basar sus ramas en la última rama de A y luego rebasear contra main cuando A haga merge.
+    Changes:
+
+    * Names of directories
+    * Small bugfixes
+    * Changed font to the default Tk font
+    * Added possibility to move scrollbars with mouse wheel
+
+* Breeze Dark version which was created from the theme above by me
+
+## Installation
+
+### Linux
+1. Of course, download one or both themes :)
+2. If you want to use both, set your environment variable *TCLLIBPATH* to
+   directory where file *pkgIndex.tcl* **outside** both themes is. For example,
+   if you put both themes in */home/user/themes* directory, *TCLLIBPATH* must
+   be set on `/home/user/themes`.
+3. If you want to use only one of themes: set your environment variable
+   *TCLLIBPATH* to theme directory. For example, if you want to use only Breeze
+   theme and you put it in */home/user/.themes/* directory, *TCLLIBPATH* must
+   be set on `/home/user/.themes/breeze`.
+4. Edit (or create) your *.Xresources* file and add line:
+   * If you want to use Breeze theme: `*TkTheme:breeze`
+   * If you want to use Breeze dark theme: `*TkTheme:breeze-dark`
+5. Reload your Xorg configuration with command: `xrdb -merge ~/.Xresources`
+6. Profit :)
+
+----
+
+That's all for now, as usual, probably I forgot about something important ;)
+
+Bartek thindil Jasicki
