@@ -1,151 +1,187 @@
-Plan de trabajo: dividir el proyecto “Lista de compras (Tkinter)” para 3 personas en un mismo repositorio
-A continuación tienes una división clara por responsabilidades, flujo de ramas/PRs, definición de “hecho” y un plan de integración para que 3 personas trabajen en paralelo sin pisarse.
+## Plan de trabajo: dividir el proyecto “Lista de compras (Tkinter)” para 3 personas en un mismo repositorio
 
-Estructura del repositorio
-src/
-main.py
-ui/ (opcional a futuro si separan módulos)
-services/ (persistencia u otros servicios)
-data/ (persistencia local .json)
-README.md
-.gitignore (incluye .venv/, pycache/, data/*.json)
-requirements.txt
-.editorconfig (opcional para estandarizar indentación)
-.gitattributes (opcional para CRLF/LF)
-CODEOWNERS (opcional para revisión de PRs)
-Mantener un único punto de entrada: src/main.py
+A continuación una división clara por responsabilidades, flujo de ramas/PRs, definición de “hecho” y un plan de integración para que 3 personas trabajen en paralelo sin pisarse.
 
-Convenciones y reglas comunes
-Ramas por Issue: feature/ (ej.: feature/ventana-base)
-Commits pequeños y claros: “feat: …”, “fix: …”, “refactor: …”
-PRs hacia main con descripción que incluya “Closes #N”
-Revisiones cruzadas: mínimo 1 aprobación (ideal 2 si el cambio es grande)
-No hacer push directo a main
-Estilo:
-Python 3.10+
-4 espacios de indentación
-Nombres descriptivos en métodos y variables
-Windows fin de línea (recomendado):
-git config --global core.autocrlf true
-Roles y asignación de Issues
-Persona A — UI base y operaciones de ítems
+## Estructura del repositorio
+
+- src/
+  - main.py
+  - services/ (persistencia u otros servicios)
+- data/ (persistencia local .json)
+- README.md
+- .gitignore (incluye .venv/, __pycache__/, data/*.json)
+- requirements.txt
+
+> Mantener un único punto de entrada: src/main.py
+
+---
+
+## Convenciones y reglas comunes
+
+- Ramas por Issue: feature/<slug-del-issue> (ej.: feature/estructura-inicial)
+- Commits pequeños y claros: “feat: …”, “fix: …”, “refactor: …”
+- PRs hacia main con descripción que incluya “Closes #N”
+- Revisiones cruzadas: mínimo 1 aprobación (ideal 2 si el cambio es grande)
+- No hacer push directo a main
+- Estilo:
+  - Python 3.10+
+  - 4 espacios de indentación
+  - Nombres descriptivos en métodos y variables
+- Windows fin de línea (recomendado para no tener problemas de fin de linea en diferentes SO):
+  - git config --global core.autocrlf true
+
+---
+
+## Roles y asignación de Issues
+
+### Persona A — UI base y operaciones de ítems
 Responsable de la ventana, formulario de entrada y operaciones sobre la lista.
 
-Issue 1: Ventana base
-Rama: feature/ventana-base
-Tareas: crear Tk root, tamaño, frame principal, etiqueta de estado inicial.
-Issue 2: Agregar ítems (Entry + botón + Enter) y Treeview
-Rama: feature/agregar-items
-Tareas: Entry con StringVar, botón “Agregar”, bind “”, Treeview con columnas “Ítem” y “Hecho”, métodos render() y update_status().
-Issue 3: Eliminar seleccionados y Limpiar lista
-Rama: feature/eliminar-limpiar
-Tareas: barra de acciones, botón “Eliminar seleccionado(s)”, botón “Limpiar lista”, bind “”, lógica para borrar por índices en orden inverso y confirmación al limpiar.
-Dependencias: la rama de Issue 2 se basa en Issue 1. Issue 3 se basa en 2.
+- Issue 1: Ventana base
+  - Rama: feature/ventana-base
+  - Tareas: crear Tk root, tamaño, frame principal, etiqueta de estado inicial.
+- Issue 2: Agregar ítems (Entry + botón + Enter) y Treeview
+  - Rama: feature/agregar-items
+  - Tareas: Entry con StringVar, botón “Agregar”, bind “<Return>”, Treeview con columnas “Ítem” y “Hecho”, métodos render() y update_status().
+- Issue 3: Eliminar seleccionados y Limpiar lista
+  - Rama: feature/eliminar-limpiar
+  - Tareas: barra de acciones, botón “Eliminar seleccionado(s)”, botón “Limpiar lista”, bind “<Delete>”, lógica para borrar por índices en orden inverso y confirmación al limpiar.
 
-Persona B — Interacciones y estado avanzado
+> Dependencias: la rama de Issue 2 se basa en Issue 1. Issue 3 se basa en 2.
+
+### Persona B — Interacciones y estado avanzado
 Responsable de UX y controles adicionales.
 
-Issue 5: Marcar hecho con doble clic
-Rama: feature/doble-click-done
-Tareas: bind “” sobre Treeview, método toggle_done(), re-render y actualización de estado.
-Issue 6: Barra de estado (contador)
-Rama: feature/barra-estado
-Tareas: etiqueta de estado robusta (“N ítems · M hechos”), actualizar tras agregar, eliminar, limpiar y toggle.
-Issue 7: Validaciones y atajos extra
-Rama: feature/atajos-validaciones
-Tareas: validación de duplicados (confirmación si ya existe, case-insensitive), mensajes de feedback consistentes.
-Dependencias: se basa en lo que entregó Persona A (Issue 2/3).
+- Issue 5: Marcar hecho con doble clic
+  - Rama: feature/doble-click-done
+  - Tareas: bind “<Double-1>” sobre Treeview, método toggle_done(), re-render y actualización de estado.
+- Issue 6: Barra de estado (contador)
+  - Rama: feature/barra-estado
+  - Tareas: etiqueta de estado robusta (“N ítems · M hechos”), actualizar tras agregar, eliminar, limpiar y toggle.
+- Issue 7: Validaciones y atajos extra
+  - Rama: feature/atajos-validaciones
+  - Tareas: validación de duplicados (confirmación si ya existe, case-insensitive), mensajes de feedback consistentes.
 
-Persona C — Persistencia, empaquetado y documentación
+> Dependencias: se basa en lo que entregó Persona A (Issue 2/3).
+
+### Persona C — Persistencia, empaquetado y documentación
 Responsable de guardar/abrir y material de entrega.
 
-Issue 4: Guardar/Abrir JSON + atajos Ctrl+S / Ctrl+O
-Rama: feature/json-atajos
-Tareas: filedialog askopen/asksave, Path, json dumps/loads, normalizar estructura [{"text", "done"}], variable self.current_file, mensajes de error, actualización de status temporal al guardar.
-Issue 8: README
-Rama: docs/readme
-Tareas: requisitos, cómo ejecutar, atajos, flujo de contribución (ramas/PRs), estructura del repo.
-Issue 9: Release v0.1.0
-Rama: release/v0.1.0 (o directo tag)
-Tareas: tag, notas de release, checklist de MVP cerrado.
-Dependencias: requiere que lo de A y B esté integrado para documentar y lanzar.
+- Issue 4: Guardar/Abrir JSON + atajos Ctrl+S / Ctrl+O
+  - Rama: feature/json-atajos
+  - Tareas: filedialog askopen/asksave, Path, json dumps/loads, normalizar estructura [{"text", "done"}], variable self.current_file, mensajes de error, actualización de status temporal al guardar.
+- Issue 8: README
+  - Rama: docs/readme
+  - Tareas: requisitos, cómo ejecutar, atajos, flujo de contribución (ramas/PRs), estructura del repo.
+- Issue 9: Release v0.1.0
+  - Rama: release/v0.1.0 (o directo tag)
+  - Tareas: tag, notas de release, checklist de MVP cerrado.
 
-Orden de integración recomendado
-Persona A mergea primero: Issue 1 → Issue 2 → Issue 3, en ese orden (PRs secuenciales).
-Persona B crea ramas desde main actualizado y va integrando:
-Issue 5 → PR → merge
-Issue 6 → PR → merge
-Issue 7 → PR → merge
-Persona C integra después:
-Issue 4 → PR → merge
-Issue 8 → PR → merge
-Issue 9 → tag y release
-Si B o C necesitan empezar antes, pueden crear sus ramas desde la última rama de A (p. ej., “compare: feature/agregar-items”). Luego, cuando A mergee, rebase/merge sobre main para limpiar el historial.
+> Dependencias: requiere que lo de A y B esté integrado para documentar y lanzar.
 
-Definición de “hecho” por Issue (DoD)
-Código compila/ejecuta: python src/main.py
-Funcionalidad según criterios de aceptación
-Sin errores en consola
-UI funcional y coherente
-PR con:
-Descripción breve del cambio
-“Closes #N”
-Captura de pantalla opcional (recomendado para UI)
-Revisión y aprobación de al menos 1 compañero
-Merge a main sin conflictos
-Puntos clave de integración técnica
-Un único archivo ejecutable principal: src/main.py
-Clase App con métodos separados:
-_build_ui, _bind_shortcuts, add_item, delete_selected, clear_list, toggle_done, save_json, load_json, render, update_status
-Cada persona extiende métodos existentes o agrega nuevos métodos sin romper firmas
-Evitar renombrar variables compartidas sin avisar (p. ej., self.items, self.tree, self.status, self.current_file)
-Si una persona necesita reordenar UI, comunicar los ids/atributos que cambian
-Reglas de PR y resolución de conflictos
-Antes de abrir PR:
-git checkout main
-git pull origin main
-git checkout tu-rama
-git rebase main (o merge main → tu-rama)
-Si hay conflictos en src/main.py:
-Resuélvelos conservando:
-Modelo: self.items = [{"text", "done"}]
-Render: Treeview con “Ítem” y “Hecho”
-Acciones: eliminar/limpiar y atajos
-Persistencia: JSON con ensure_ascii=False, indent=2
-Tras resolver:
-git add .
-git rebase --continue (o commit de merge)
-Correr local: python src/main.py
-Abrir/actualizar PR
-Coordinación y automatizaciones recomendadas
-Project (nuevo, no “classic”) con campo Status:
-Por hacer → En progreso → Terminado
-Workflows sugeridos:
-When item added → Status = Por hacer
-When PR opened → Status = En progreso
-When PR closed/merged → Status = Terminado
-When issue closed → Status = Terminado
-CODEOWNERS (opcional):
-src/main.py requiere 1 review del equipo
-Pre-commit (opcional):
-black/ruff para formato/estilo (si el equipo lo desea)
-Checklist de cada persona (comandos base)
-Crear rama del Issue:
-git checkout -b feature/
-Trabajar, probar:
-python src/main.py
-Commit/push:
-git add .
-git commit -m "feat: "
-git push -u origin feature/
-PR:
-base: main
-compare: feature/
-descripción con “Closes #N”
-Merge tras revisión:
-Actualizar Project (si no está automatizado)
-Próximos pasos inmediatos
-Crear/confirmar Issues en GitHub con títulos y descripciones claras (según el reparto A/B/C).
-Persona A comienza con Issue 1 y 2. Personas B y C pueden preparar sus ramas pero esperarán a que A integre Issue 2 para basarse en main actualizado.
-Definir en el README el flujo de contribución resumido y los atajos de teclado.
-Avanzar con PRs cortos y frecuentes para minimizar conflictos.
+---
+
+## Orden de integración recomendado
+
+1. Persona A mergea primero: Issue 1 → Issue 2 → Issue 3, en ese orden (PRs secuenciales).
+2. Persona B crea ramas desde main actualizado y va integrando:
+   - Issue 5 → PR → merge
+   - Issue 6 → PR → merge
+   - Issue 7 → PR → merge
+3. Persona C integra después:
+   - Issue 4 → PR → merge
+   - Issue 8 → PR → merge
+   - Issue 9 → tag y release
+
+> Si B o C necesitan empezar antes, pueden crear sus ramas desde la última rama de A (p. ej., “compare: feature/agregar-items”). Luego, cuando A mergee, rebase/merge sobre main para limpiar el historial.
+
+---
+
+## Definición de “hecho” por Issue (DoD)
+
+- Código compila/ejecuta: python src/main.py
+- Funcionalidad según criterios de aceptación
+- Sin errores en consola
+- UI funcional y coherente
+- PR con:
+  - Descripción breve del cambio
+  - “Closes #N”
+  - Captura de pantalla opcional (recomendado para UI)
+- Revisión y aprobación de al menos 1 compañero
+- Merge a main sin conflictos
+
+---
+
+## Puntos clave de integración técnica
+
+- Un único archivo ejecutable principal: src/main.py
+- Clase App con métodos separados:
+  - _build_ui, _bind_shortcuts, add_item, delete_selected, clear_list, toggle_done, save_json, load_json, render, update_status
+- Cada persona extiende métodos existentes o agrega nuevos métodos sin romper firmas
+- Evitar renombrar variables compartidas sin avisar (p. ej., self.items, self.tree, self.status, self.current_file)
+- Si una persona necesita reordenar UI, comunicar los ids/atributos que cambian
+
+---
+
+## Reglas de PR y resolución de conflictos
+
+- Antes de abrir PR:
+  - git checkout main
+  - git pull origin main
+  - git checkout tu-rama
+  - git rebase main (o merge main → tu-rama)
+- Si hay conflictos en src/main.py:
+  - Resuélvelos conservando:
+    - Modelo: self.items = [{"text", "done"}]
+    - Render: Treeview con “Ítem” y “Hecho”
+    - Acciones: eliminar/limpiar y atajos
+    - Persistencia: JSON con ensure_ascii=False, indent=2
+- Tras resolver:
+  - git add .
+  - git rebase --continue (o commit de merge)
+  - Correr local: python src/main.py
+  - Abrir/actualizar PR
+
+---
+
+## Coordinación y automatizaciones recomendadas
+
+- Project (nuevo, no “classic”) con campo Status:
+  - Por hacer → En progreso → Terminado
+- Workflows sugeridos:
+  - When item added → Status = Por hacer
+  - When PR opened → Status = En progreso
+  - When PR closed/merged → Status = Terminado
+  - When issue closed → Status = Terminado
+- CODEOWNERS (opcional):
+  - src/main.py requiere 1 review del equipo
+- Pre-commit (opcional):
+  - black/ruff para formato/estilo (si el equipo lo desea)
+
+---
+
+## Checklist de cada persona (comandos base)
+
+- Crear rama del Issue:
+  - git checkout -b feature/<issue>
+- Trabajar, probar:
+  - python src/main.py
+- Commit/push:
+  - git add .
+  - git commit -m "feat: <cambio>"
+  - git push -u origin feature/<issue>
+- PR:
+  - base: main
+  - compare: feature/<issue>
+  - descripción con “Closes #N”
+- Merge tras revisión:
+  - Actualizar Project (si no está automatizado)
+
+---
+
+## Próximos pasos inmediatos
+
+1. Crear/confirmar Issues en GitHub con títulos y descripciones claras (según el reparto A/B/C).
+2. Persona A comienza con Issue 1 y 2. Personas B y C pueden preparar sus ramas pero esperarán a que A integre Issue 2 para basarse en main actualizado.
+3. Definir en el README el flujo de contribución resumido y los atajos de teclado.
+4. Avanzar con PRs cortos y frecuentes para minimizar conflictos.

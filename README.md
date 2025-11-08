@@ -1,40 +1,121 @@
-## General information
+# Lista de Compras (Informatorio)
 
-These are Tk version of KDE Breeze and Breeze Dark themes.
+> Proyecto colaborativo de 3 personas para gestionar una lista de compras con interfaz Tkinter, siguiendo buenas prácticas de Git, ramas y Pull Requests.
 
-* Breeze version was created by MaxPerl:
+## Visión general
+- Lenguaje: **Python 3.13.7**.
+- Interfaz actual: **Tkinter 8.6** (GUI).
+- Entrada principal: **src/main.py**.
+- Licencia: **MIT** (ver archivo LICENSE).
+- Organización del equipo: ver Asignacion-Tareas.txt.
 
-  https://github.com/MaxPerl/ttk-Breeze
+## Estructura actual 05/11/2025
+- .gitignore
+- Asignacion-Tareas.txt
+- LICENSE
+- README.md
+- requirements.txt
+- src/main.py
 
-    Changes:
+## Puesta en marcha
 
-    * Names of directories
-    * Small bugfixes
-    * Changed font to the default Tk font
-    * Added possibility to move scrollbars with mouse wheel
+### 1) Requisitos
+- **Python 3.13.7** instalado (incluye Tkinter 8.6 en instalaciones estándar de Windows/macOS).
 
-* Breeze Dark version which was created from the theme above by me
+### 2) Clonar y entrar al proyecto
+```bash
+git clone https://github.com/miguelrtrombotto/lista-compras-informatorio
+cd lista-compras-informatorio
+```
 
-## Installation
+### 3) Crear y activar entorno virtual
+Windows (PowerShell):
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+Linux/macOS (bash):
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
-### Linux
-1. Of course, download one or both themes :)
-2. If you want to use both, set your environment variable *TCLLIBPATH* to
-   directory where file *pkgIndex.tcl* **outside** both themes is. For example,
-   if you put both themes in */home/user/themes* directory, *TCLLIBPATH* must
-   be set on `/home/user/themes`.
-3. If you want to use only one of themes: set your environment variable
-   *TCLLIBPATH* to theme directory. For example, if you want to use only Breeze
-   theme and you put it in */home/user/.themes/* directory, *TCLLIBPATH* must
-   be set on `/home/user/.themes/breeze`.
-4. Edit (or create) your *.Xresources* file and add line:
-   * If you want to use Breeze theme: `*TkTheme:breeze`
-   * If you want to use Breeze dark theme: `*TkTheme:breeze-dark`
-5. Reload your Xorg configuration with command: `xrdb -merge ~/.Xresources`
-6. Profit :)
+### 4) Instalar dependencias
+```bash
+pip install -r requirements.txt
 
-----
+### 5) Ejecutar la app (Tkinter)
+```bash
+python src/main.py
+```
 
-That's all for now, as usual, probably I forgot about something important ;)
+## Modelo de ramas (equipo de 3)
+- **main**: estable; solo se actualiza con Pull Requests.
+- **feature/estructura-inicial** → Persona A.
+- Otras ramas sugeridas:
+  - **feature/ui-persona-b** → Persona B
+  - **feature/persistencia-persona-c** → Persona C
 
-Bartek thindil Jasicki
+## Flujo de trabajo
+1. Actualizar main:
+```bash
+git switch main
+git pull origin main
+```
+
+2. Crear tu rama:
+```bash
+git switch -c feature/<descripcion>-persona-<a|b|c>
+```
+
+3. Commits (Convencional Commits: feat, fix, docs, chore, refactor, test):
+```bash
+git add .
+git commit -m "feat: agrega ventana principal de Tkinter con lista básica"
+```
+
+4. Push y PR:
+```bash
+git push -u origin feature/<...>
+```
+- En GitHub: base = main, compare = tu feature.
+- Completar título, descripción y pasos para probar.
+
+5. Mantener tu rama al día:
+- Rebase (historial limpio):
+```bash
+git switch main && git pull
+git switch feature/<...>
+git rebase main
+git push --force-with-lease
+```
+- o Merge:
+```bash
+git switch main && git pull
+git switch feature/<...>
+git merge main
+git push
+```
+
+## Reglas de protección (recomendadas)
+- Require a pull request before merging: activado.
+- Required reviews: 1.
+- Required status checks (si hay CI): opcional.
+- Require conversation resolution: opcional.
+- Require branches to be up to date: opcional (si bloquea, desactivar).
+- Include administrators: desactivado (para evitar bloqueos si falta un revisor).
+
+## Capturas (opcional)
+- Guardar imágenes en `docs/images/` y referenciarlas así:
+```
+![Ventana principal](docs/images/ventana-principal.png)
+```
+- Sugeridas: ventana principal, agregar/editar/eliminar ítems, marcar comprado/no comprado, y (si aplica) un PR con checks en verde.
+
+## Licencia
+Este proyecto está bajo la licencia **MIT**. Ver el archivo LICENSE para más detalles.
+
+## Autores
+- Persona A: Miguel R. Trombotto
+- Persona B
+- Persona C

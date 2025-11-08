@@ -1,0 +1,5 @@
+# En este proyecto, Tkinter viene incluido con Python 3.10+
+# Si usas Python < 3.10, descomentar según el SO
+
+# Para Windows/Linux/macOS:
+# tk es parte de la instalación estándar de Python
