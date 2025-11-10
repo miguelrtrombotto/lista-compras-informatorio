@@ -132,13 +132,22 @@ class App:
             messagebox.showinfo("Info", "Escribe un ítem.")
             return  # Sale del método sin cambios
 
+        if any(i["text"].lower() == text.lower() for i in self.items):
+            #Preguntar al usuario si desea agregar el item de todos modos
+            continuar = messagebox.askyesno("Duplicado", f"El item \"{text}\" ya esta en la lista.\nDesea agregarlo igualmente?")
+            if not continuar:
+                # Si el usuario elige "No", cancela la operación
+                self.var_item.set("")
+                return
+        
         # Agrega un nuevo diccionario al modelo con el texto y el estado "no hecho"
         self.items.append({"text": text, "done": False})
 
         # Limpia el Entry para permitir ingresar un nuevo valor fácilmente
         self.var_item.set("")
 
-        self.render()        # Redibuja la tabla para reflejar el nuevo ítem y actualiza el contador
+        # Redibuja la tabla para reflejar el nuevo ítem y actualiza el contador
+        self.render()
 
         self.update_status()
     
@@ -225,7 +234,7 @@ def main():
     def instalar_si_falta(paquete):
         
         if importlib.util.find_spec(paquete) is None:
-            elec = input("Desea instalar TTkThemes? S/N: ").strip().lower()
+            elec = input("Desea instalar el tema Breeze-dark de la biblioteca ttkthemes? S/N: ").strip().lower()
             if elec == "s":
                 print(f"Instalando {paquete}... Esto puede tardar unos minutos")
                 subprocess.check_call([sys.executable, "-m", "pip", "install", paquete])
