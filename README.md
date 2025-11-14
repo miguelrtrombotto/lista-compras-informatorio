@@ -117,5 +117,5 @@ Este proyecto está bajo la licencia **MIT**. Ver el archivo LICENSE para más d
 
 ## Autores
 - Persona A: Miguel R. Trombotto
-- Persona B
-- Persona C
+- Persona B: Jorge Caballero
+- Persona C: Ivan Quiroz
