@@ -1,10 +1,11 @@
-#  feature/estructura-inicial
 import tkinter as tk
-from tkinter import ttk, messagebox, filedialog
-import json
+from tkinter import ttk, messagebox
 import subprocess
 import sys
 import importlib.util
+import json
+from pathlib import Path
+from tkinter import filedialog
 
 
 class App:
@@ -16,6 +17,7 @@ class App:
         self.root.geometry("700x520")
 
         self.items = []
+        self.current_file = None
 
         self._build_ui()
         self._bind_shortcuts()
@@ -26,9 +28,7 @@ class App:
         main = ttk.Frame(self.root, padding=12)
         main.pack(fill="both", expand=True)
 
-        # ---------------------
-        # Sección: Formulario (input + botón Agregar)
-        # ---------------------
+        # Sección: Formulario
         form = ttk.Frame(main)
         form.pack(fill="x")
 
@@ -43,24 +43,18 @@ class App:
 
         entry.bind("<Return>", lambda e: self.add_item())
 
-        # ---------------------
         # Sección: Barra de acciones
-        # ---------------------
         actions = ttk.Frame(main)
         actions.pack(fill="x", pady=(6, 0))
 
         ttk.Button(actions, text="Eliminar seleccionado(s)", command=self.delete_selected).pack(side="left")
-
         ttk.Button(actions, text="Limpiar lista", command=self.clear_list).pack(side="left", padx=6)
 
-        # Botones para guardar y abrir
+        # Botones de guardar/abrir
         ttk.Button(actions, text="Guardar (Ctrl+S)", command=self.guardar_lista).pack(side="left", padx=6)
-
         ttk.Button(actions, text="Abrir (Ctrl+O)", command=self.abrir_lista).pack(side="left", padx=6)
 
-        # ---------------------
         # Sección: Tabla (Treeview) con scroll
-        # ---------------------
         table_frame = ttk.Frame(main)
         table_frame.pack(fill="both", expand=True, pady=8)
         
@@ -80,24 +74,22 @@ class App:
         scroll.pack(side="right", fill="y")
         self.tree.configure(yscrollcommand=scroll.set)
 
-        # ---------------------
-        # Sección: Barra de estado (contador)
-        # ---------------------
+        # Sección: Barra de estado
         self.status = tk.StringVar(value="0 ítems · 0 hechos")
         ttk.Label(self.root, textvariable=self.status, anchor="w").pack(fill="x", padx=12, pady=(0, 8))
         
-        # ---------------------
-        # Sección: Barra de progreso (porcentaje completado)
-        # ---------------------
+        # Sección: Barra de progreso
         self.progress = ttk.Progressbar(self.root, orient="horizontal", mode="determinate")
         self.progress.pack(fill="x", padx=12, pady=(0, 4))
 
 
     def _bind_shortcuts(self):
         self.root.bind("<Delete>", lambda e: self.delete_selected())
+        self.tree.bind("<Double-1>", self.toggle_done)
+        
+        # Atajos para guardar y abrir
         self.root.bind("<Control-s>", lambda e: self.guardar_lista())
         self.root.bind("<Control-o>", lambda e: self.abrir_lista())
-        self.tree.bind("<Double-1>", self.toggle_done)
 
 
     def add_item(self):
@@ -158,59 +150,46 @@ class App:
             self.update_status()
 
     def guardar_lista(self):
-        """
-        Guarda la lista actual en un archivo JSON
-        """
-        archivo = filedialog.asksaveasfilename(
-            defaultextension=".json",
-            filetypes=[("JSON files", "*.json"), ("All files", "*.*")]
-        )
-        
-        if archivo:
-            try:
-                with open(archivo, 'w', encoding='utf-8') as f:
-                    json.dump(self.items, f, indent=4, ensure_ascii=False)
-                
-                messagebox.showinfo("Éxito", f"Lista guardada en:\n{archivo}")
-                print(f"Lista guardada en: {archivo}")
-            except Exception as e:
-                messagebox.showerror("Error", f"No se pudo guardar:\n{e}")
-                print(f"Error al guardar: {e}")
+        if not self.items:
+            messagebox.showwarning("Advertencia", "No hay ítems para guardar.")
+            return
 
+        file = filedialog.asksaveasfilename(
+            defaultextension=".json",
+            filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
+            initialdir="data"
+        )
+
+        if file:
+            try:
+                with open(file, "w", encoding="utf-8") as f:
+                    json.dump(self.items, f, ensure_ascii=False, indent=2)
+                self.current_file = file
+                messagebox.showinfo("Éxito", f"Lista guardada en:\n{file}")
+            except Exception as e:
+                messagebox.showerror("Error", f"No se pudo guardar:\n{str(e)}")
 
     def abrir_lista(self):
-        """
-        Abre una lista desde un archivo JSON
-        """
-        archivo = filedialog.askopenfilename(
-            filetypes=[("JSON files", "*.json"), ("All files", "*.*")]
+        file = filedialog.askopenfilename(
+            filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
+            initialdir="data"
         )
-        
-        if archivo:
+
+        if file:
             try:
-                with open(archivo, 'r', encoding='utf-8') as f:
-                    items_cargados = json.load(f)
+                with open(file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
                 
-                # Validar que sea una lista válida
-                if not isinstance(items_cargados, list):
-                    raise ValueError("El archivo no contiene una lista válida")
-                
-                # Limpiar la lista actual
-                self.items.clear()
-                
-                # Agregar los ítems del archivo
-                for item in items_cargados:
-                    if isinstance(item, dict) and "text" in item and "done" in item:
-                        self.items.append(item)
-                
-                self.render()
-                self.update_status()
-                messagebox.showinfo("Éxito", f"Lista abierta desde:\n{archivo}")
-                print(f"Lista abierta desde: {archivo}")
-            
+                if isinstance(data, list) and all(isinstance(i, dict) and "text" in i and "done" in i for i in data):
+                    self.items = data
+                    self.current_file = file
+                    self.render()
+                    self.update_status()
+                    messagebox.showinfo("Éxito", f"Lista cargada desde:\n{file}")
+                else:
+                    messagebox.showerror("Error", "El archivo no tiene el formato correcto.")
             except Exception as e:
-                messagebox.showerror("Error", f"No se pudo abrir:\n{e}")
-                print(f"Error al abrir archivo: {e}")
+                messagebox.showerror("Error", f"No se pudo abrir:\n{str(e)}")
 
     def render(self):
         self.tree.delete(*self.tree.get_children())
