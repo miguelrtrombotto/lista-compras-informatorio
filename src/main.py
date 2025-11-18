@@ -10,15 +10,11 @@ import os
 
 
 class App:
-    """Clase principal de la aplicación de Lista de Compras"""
+    # Clase principal de la aplicación de Lista de Compras
     
     def __init__(self, root: tk.Tk):
-        """
-        Inicializa la aplicación
-        
-        Args:
-            root (tk.Tk): Ventana principal de Tkinter
-        """
+        # Inicializa la aplicación
+
         self.root = root
         self.root.title("Lista de compras")
         self.root.geometry("700x520")
@@ -38,11 +34,29 @@ class App:
         self.update_status()
 
     def _build_ui(self):
-        """Construye la interfaz gráfica de la aplicación"""
+        # Construye la interfaz gráfica de la aplicación
         
         # Marco principal con padding
         main = ttk.Frame(self.root, padding=12)
         main.pack(fill="both", expand=True)
+
+
+        # ===== SECCIÓN: Barra de acciones =====
+        actions = ttk.Frame(main)
+        actions.pack(fill="x", pady=(0,6))
+
+        # Botón para abrir una lista guardada (Ctrl+O)
+        ttk.Button(actions, text="Abrir (Ctrl+O)", command=self.abrir_lista).pack(side="left", padx=6)
+
+        # Botón para guardar la lista en JSON (Ctrl+S)
+        ttk.Button(actions, text="Guardar (Ctrl+S)", command=self.guardar_lista).pack(side="left", padx=6)
+
+        # Botón para eliminar ítems seleccionados
+        ttk.Button(actions, text="Eliminar seleccionado(s)", command=self.delete_selected).pack(side="left", padx=6)
+        
+        # Botón para limpiar toda la lista
+        ttk.Button(actions, text="Limpiar lista", command=self.clear_list).pack(side="left", padx=6)
+
 
         # ===== SECCIÓN: Formulario de entrada =====
         form = ttk.Frame(main)
@@ -50,12 +64,14 @@ class App:
 
         # Etiqueta para el campo de entrada
         ttk.Label(form, text="Ítem:").grid(row=0, column=0, padx=(0, 6))
+        
         # Variable para almacenar el texto ingresado
         self.var_item = tk.StringVar()
 
         # Campo de entrada para escribir ítems
         entry = ttk.Entry(form, textvariable=self.var_item)
         entry.grid(row=0, column=1, sticky="ew")
+        
         # Hace que el campo de entrada sea flexible (expande con la ventana)
         form.columnconfigure(1, weight=1)
 
@@ -65,23 +81,10 @@ class App:
         # Permite agregar ítem presionando Enter
         entry.bind("<Return>", lambda e: self.add_item())
 
-        # ===== SECCIÓN: Barra de acciones =====
-        actions = ttk.Frame(main)
-        actions.pack(fill="x", pady=(6, 0))
-
-        # Botón para eliminar ítems seleccionados
-        ttk.Button(actions, text="Eliminar seleccionado(s)", command=self.delete_selected).pack(side="left")
-        # Botón para limpiar toda la lista
-        ttk.Button(actions, text="Limpiar lista", command=self.clear_list).pack(side="left", padx=6)
-
-        # Botón para guardar la lista en JSON (Ctrl+S)
-        ttk.Button(actions, text="Guardar (Ctrl+S)", command=self.guardar_lista).pack(side="left", padx=6)
-        # Botón para abrir una lista guardada (Ctrl+O)
-        ttk.Button(actions, text="Abrir (Ctrl+O)", command=self.abrir_lista).pack(side="left", padx=6)
-
+        
         # ===== SECCIÓN: Tabla (Treeview) con scroll =====
         table_frame = ttk.Frame(main)
-        table_frame.pack(fill="both", expand=True, pady=8)
+        table_frame.pack(fill="both", expand=True, pady=0)
         
         # Treeview para mostrar los ítems en tabla
         self.tree = ttk.Treeview(
@@ -105,10 +108,12 @@ class App:
         # Conectar scrollbar con Treeview
         self.tree.configure(yscrollcommand=scroll.set)
 
+
         # ===== SECCIÓN: Barra de estado =====
         self.status = tk.StringVar(value="0 ítems · 0 hechos")
         # Etiqueta que muestra cantidad de ítems y progreso
         ttk.Label(self.root, textvariable=self.status, anchor="w").pack(fill="x", padx=12, pady=(0, 8))
+
         
         # ===== SECCIÓN: Barra de progreso =====
         self.progress = ttk.Progressbar(self.root, orient="horizontal", mode="determinate")
@@ -117,7 +122,7 @@ class App:
 
 
     def _bind_shortcuts(self):
-        """Vincula atajos de teclado a sus respectivas funciones"""
+        # Vincula atajos de teclado a sus respectivas funciones
         
         # Atajo: Delete para eliminar ítems seleccionados
         self.root.bind("<Delete>", lambda e: self.delete_selected())
@@ -131,7 +136,7 @@ class App:
 
 
     def add_item(self):
-        """Agrega un nuevo ítem a la lista con validaciones"""
+        # Agrega un nuevo ítem a la lista con validaciones
         
         # Obtener texto del campo de entrada y eliminar espacios
         text = (self.var_item.get() or "").strip()
@@ -163,12 +168,9 @@ class App:
         self.update_status()
     
     def toggle_done(self, event):
-        """
-        Marca o desmarca un ítem como "hecho" al hacer doble clic
-        
-        Args:
-            event: Evento del mouse (contiene posición)
-        """
+        # Marca o desmarca un ítem como "hecho" al hacer doble clic
+        # Args:
+            # event: Evento del mouse (contiene posición)
         
         # Obtener la fila donde se hizo clic
         item_id = self.tree.identify_row(event.y)
@@ -187,7 +189,7 @@ class App:
         self.update_status()
 
     def delete_selected(self):
-        """Elimina los ítems seleccionados de la tabla"""
+        # Elimina los ítems seleccionados de la tabla
         
         # Obtener filas seleccionadas
         sel = self.tree.selection()
@@ -210,7 +212,7 @@ class App:
         self.update_status()
 
     def clear_list(self):
-        """Limpia toda la lista después de una confirmación"""
+        # Limpia toda la lista después de una confirmación
         
         # Validar que hay ítems
         if not self.items:
@@ -226,7 +228,7 @@ class App:
             self.update_status()
 
     def guardar_lista(self):
-        """Guarda la lista actual en un archivo JSON"""
+        # Guarda la lista actual en un archivo JSON
         
         # Validar que hay ítems para guardar
         if not self.items:
@@ -255,7 +257,7 @@ class App:
                 messagebox.showerror("Error", f"No se pudo guardar:\n{str(e)}")
 
     def abrir_lista(self):
-        """Abre una lista guardada desde un archivo JSON"""
+        # Abre una lista guardada desde un archivo JSON
         
         # Abrir diálogo para seleccionar archivo JSON
         file = filedialog.askopenfilename(
@@ -290,7 +292,7 @@ class App:
                 messagebox.showerror("Error", f"No se pudo abrir:\n{str(e)}")
 
     def render(self):
-        """Actualiza la tabla visual con los ítems actuales"""
+        # Actualiza la tabla visual con los ítems actuales
         
         # Limpiar todas las filas existentes de la tabla
         self.tree.delete(*self.tree.get_children())
@@ -301,7 +303,7 @@ class App:
             self.tree.insert("", "end", values=(it["text"], "✔" if it["done"] else ""))
 
     def update_status(self):
-        """Actualiza la barra de estado y barra de progreso"""
+        # Actualiza la barra de estado y barra de progreso
         
         # Calcular total de ítems
         total = len(self.items)
@@ -317,18 +319,15 @@ class App:
         
 
 def main():
-    """Función principal que configura la aplicación e inicia el bucle principal"""
+    # Función principal que configura la aplicación e inicia el bucle principal
     
     def instalar_si_falta(paquete):
-        """
-        Verifica si un paquete está instalado y lo instala si es necesario
-        
-        Args:
-            paquete (str): Nombre del paquete a verificar e instalar
+        # Verifica si un paquete está instalado y lo instala si es necesario
+        # Args:
+            # paquete (str): Nombre del paquete a verificar e instalar
             
-        Returns:
-            bool: True si se instaló, False si ya estaba instalado
-        """
+        # Returns:
+            # bool: True si se instaló, False si ya estaba instalado
         
         # Verificar si el paquete ya está instalado
         if importlib.util.find_spec(paquete) is None:
@@ -345,7 +344,7 @@ def main():
             print(f"{paquete} ya está instalado.")
             return True
     
-    # Verificar e instalar ttkthemes si es necesario        
+    # Verificar e instalar ttkthemes si es necesario
     ttkthemes_disponible = instalar_si_falta("ttkthemes")
     
     # ⭐ CREAR VENTANA CON TEMA ⭐
@@ -363,7 +362,8 @@ def main():
     # Obtener ruta base del proyecto (carpeta padre del archivo actual)
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     # Ruta al archivo TCL del tema Breeze Dark
-    theme_tcl = os.path.join(base_dir, "breeze-dark", "breeze-dark.tcl")    
+    theme_tcl = os.path.join(base_dir, "breeze-dark", "breeze-dark.tcl")
+
     
     # ⭐ CARGAR TEMA OSCURO ⭐
     try:
